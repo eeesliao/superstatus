@@ -1,0 +1,16 @@
+{
+  "format": 1,
+  "id": "user.gpu",
+  "name": { "en": "GPU", "zh-TW": "顯卡" },
+  "about": { "en": "two GPUs on another machine over ssh, a ring each" },
+  "role": "tile",
+  "runs": [["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=2", "USER@HOST", "nvidia-smi", "--query-gpu=utilization.gpu,memory.used", "--format=csv,noheader,nounits"]],
+  "values": {
+    "g0": { "from": "run:0", "line": 1, "col": 1 },
+    "g1": { "from": "run:0", "line": 2, "col": 1 },
+    "m0": { "from": "run:0", "line": 1, "col": 2, "scale": 1024 }
+  },
+  "lines": ["GPU {g0}% · {g1}%"],
+  "chart": { "shape": "rings", "head": "GPU", "foot": "VRAM {m0}G",
+    "items": [{ "label": "G0", "percent": "{g0}", "value": "{g0}%" }, { "label": "G1", "percent": "{g1}", "value": "{g1}%" }] }
+}

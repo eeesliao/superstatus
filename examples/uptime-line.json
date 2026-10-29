@@ -1,0 +1,10 @@
+{
+  "format": 1,
+  "id": "user.uptime",
+  "name": { "en": "Up", "zh-TW": "開機" },
+  "about": { "en": "how long this machine has been up, in hours" },
+  "role": "tile",
+  "reads": ["/proc/uptime"],
+  "values": { "hours": { "from": "read:0", "line": 1, "col": 1, "scale": 3600 } },
+  "lines": ["up {hours} h"]
+}

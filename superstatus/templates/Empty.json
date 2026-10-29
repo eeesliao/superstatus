@@ -1,0 +1,32 @@
+{
+  "kind": "superstatus-profile",
+  "format": 1,
+  "name": "Empty",
+  "savedAt": "2026-10-28T00:00:00.000Z",
+  "version": "0.8",
+  "settings": {
+    "off": [],
+    "note": "",
+    "icons": false,
+    "order": [
+      "ver"
+    ],
+    "cards": [],
+    "removed": [
+      "who",
+      "block",
+      "tools",
+      "ctx",
+      "5h",
+      "7d",
+      "score",
+      "pending",
+      "branch",
+      "dirty",
+      "ff",
+      "icons"
+    ],
+    "aboveOrder": [],
+    "aboveOff": []
+  }
+}

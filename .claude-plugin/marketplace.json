@@ -1,0 +1,6 @@
+{
+  "name": "superstatus",
+  "description": "superstatus: your own dashboard under and above the Claude Code prompt",
+  "owner": { "name": "eE" },
+  "plugins": [{ "name": "superstatus", "source": "./superstatus" }]
+}

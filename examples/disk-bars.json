@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "id": "user.disk",
+  "name": { "en": "Disk", "zh-TW": "磁碟" },
+  "about": { "en": "how full the root disk is, as a bar" },
+  "role": "tile",
+  "runs": [["df", "-k", "/"]],
+  "values": { "used": { "from": "run:0", "line": 2, "col": 3, "scale": 1048576 }, "pct": { "from": "run:0", "line": 2, "col": 5 } },
+  "lines": ["/ {pct}% · {used}G used"],
+  "chart": { "shape": "bars", "items": [{ "label": "/", "percent": "{pct}", "value": "{pct}%" }] },
+  "tile": { "words": "Disk", "value": "{pct}%", "percent": "{pct}" }
+}

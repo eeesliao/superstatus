@@ -1,0 +1,10 @@
+{
+  "name": "superstatus",
+  "version": "0.8.0",
+  "description": "Your own dashboard in Claude Code: a status line with context left and quota used, and above the prompt charts, countdowns, a pomodoro and buttons. Type /ss to arrange it.",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "eE"
+  },
+  "types": "./types/index.d.ts"
+}

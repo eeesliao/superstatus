@@ -1,0 +1,130 @@
+{
+  "kind": "superstatus-profile",
+  "format": 1,
+  "name": "各種卡片與按鈕範本",
+  "savedAt": "2026-10-20T00:00:00.000Z",
+  "version": "0.8",
+  "language": "zh-TW",
+  "settings": {
+    "off": [
+      "c4",
+      "c7",
+      "c8",
+      "c9"
+    ],
+    "note": "",
+    "icons": false,
+    "order": [
+      "ver",
+      "who",
+      "block",
+      "tools",
+      "ctx",
+      "5h",
+      "7d",
+      "score",
+      "pending",
+      "branch",
+      "dirty",
+      "ff",
+      "c1"
+    ],
+    "cards": [
+      {
+        "id": "c1",
+        "kind": "text",
+        "name": "下一步",
+        "text": "waiting on the quote",
+        "prefix": ""
+      },
+      {
+        "id": "c2",
+        "kind": "countdown",
+        "name": "上線日",
+        "text": "2027-01-01",
+        "prefix": "",
+        "size": "H2",
+        "section": "above"
+      },
+      {
+        "id": "c3",
+        "kind": "file",
+        "name": "專案",
+        "text": "README.md",
+        "prefix": "# ",
+        "section": "above",
+        "size": "H2"
+      },
+      {
+        "id": "c4",
+        "kind": "command",
+        "name": "開機",
+        "text": "uptime",
+        "prefix": "",
+        "section": "above",
+        "size": "H2"
+      },
+      {
+        "id": "c5",
+        "kind": "module",
+        "name": "主機",
+        "text": "host.resources",
+        "prefix": "",
+        "section": "above",
+        "size": "H3"
+      },
+      {
+        "id": "c6",
+        "kind": "module",
+        "name": "額度",
+        "text": "session.quota",
+        "prefix": "",
+        "section": "above",
+        "size": "H3"
+      },
+      {
+        "id": "c7",
+        "kind": "switch",
+        "name": "探針",
+        "text": "probe",
+        "prefix": "",
+        "onArgs": "",
+        "offArgs": "off",
+        "section": "above"
+      },
+      {
+        "id": "c8",
+        "kind": "button",
+        "name": "說明",
+        "text": "/help",
+        "prefix": "",
+        "section": "above"
+      },
+      {
+        "id": "c9",
+        "kind": "button",
+        "name": "負載",
+        "text": "!uptime",
+        "prefix": "",
+        "section": "above"
+      }
+    ],
+    "collapsed": false,
+    "aboveOrder": [
+      "c2",
+      "c3",
+      "c5",
+      "c6"
+    ],
+    "aboveCollapsed": false,
+    "touchCollapsed": false,
+    "h3Collapsed": false,
+    "h2Collapsed": false,
+    "h3HalfCollapsed": false,
+    "h3FullCollapsed": false,
+    "h2HalfCollapsed": false,
+    "h2FullCollapsed": false,
+    "removed": [],
+    "aboveOff": []
+  }
+}

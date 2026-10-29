@@ -69,8 +69,8 @@ marketplace, then pick a scope (the first, your user, puts it in every session):
 ```
 
 In the desktop app, where `/plugin` does not run: click **+** next to the prompt box, then **Plugins**, **Add marketplace**
-with `eeesliao/superstatus`, then **Add plugin**. A plugin installed this way does not place the four profiles; the
-installer below does.
+with `eeesliao/superstatus`, then **Add plugin**. A plugin installed this way does not place the four profiles: download
+**superstatus-v0.8-profiles.zip** from Releases (any system; its README.txt says where they go), or use the Mac installer below.
 
 **On a Mac**, download the zip from Releases, unzip it and run the installer in Terminal. It asks before it changes
 anything. If you'd like to see what it plans to do first, add `--dry-run` and it won't touch a single file:
@@ -157,7 +157,7 @@ arbitrary JavaScript. `examples/` has three you can adapt, or simply ask Claude 
 ## Requirements
 
 - **Claude Code 2.1.299 or later.** Older versions refuse the panel and draw their own instead.
-- macOS or Linux. The host charts (disk, load) read Linux's `/proc`, so on a Mac they show `?`.
+- macOS or Linux. Windows is not tested yet. The host charts (disk, load) read Linux's `/proc`, so on a Mac they show `?`.
 - Times (a countdown's day, when a profile was saved) follow the time zone of the computer the session runs on.
 
 ## Licence

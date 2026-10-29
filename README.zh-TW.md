@@ -66,7 +66,8 @@
 ```
 
 在桌面版裡 `/plugin` 不能用：按提示框旁邊的 **+**，選 **Plugins**、**Add marketplace**，填 `eeesliao/superstatus`，
-再按 **Add plugin**。用這個方法裝的不會放那四份 Profile；要 Profile 的話，用下面的安裝程式。
+再按 **Add plugin**。用這個方法裝的不會放那四份 Profile：到 Releases 下載 **superstatus-v0.8-profiles.zip**（任何系統都能用，
+裡面的 README.txt 寫了要放哪裡），或用下面的 Mac 安裝程式。
 
 **Mac**：到 Releases 下載 zip、解壓縮，在終端機執行安裝程式。它動任何東西之前都會先問你；想先看看它打算做什麼，
 加上 `--dry-run` 就好，一個檔案都不會碰：
@@ -147,7 +148,7 @@ Claude 幫你加的這類卡片，還有範本裡的，**一律先是關著的**
 ## 需求
 
 - **Claude Code 2.1.299 以上。** 比較舊的版本會拒絕這個面板，改畫它自己的。
-- macOS 或 Linux。主機類的圖表（磁碟、負載）讀的是 Linux 的 `/proc`，在 Mac 上會顯示 `?`。
+- macOS 或 Linux。Windows 還沒測過。主機類的圖表（磁碟、負載）讀的是 Linux 的 `/proc`，在 Mac 上會顯示 `?`。
 - 時間（倒數卡的日期、Profile 的存檔時間）跟著執行 session 那台電腦的時區走。
 
 ## 授權

@@ -2136,19 +2136,17 @@ async function runOnHost($: EngineInterface, card: SlCard, command: string) {
 
 // The 編輯 grid's Client element (s36), drawn on the desktop alone: the one surface with a Client that was measured. Its own
 // function so that the plugin directory reads the element down to its fixed module (s45 review, MOD_IMPORT_DYNAMIC_COMPUTED:
-// a Client taken through a cast or a conditional is refused): the surface narrows e, and Client comes from $.ui.resolve plainly.
-function gridClient($: EngineInterface, e: ResolveInput, section: string, props: GridProps) {
+// a Client taken through a cast, a conditional, or even `const { Client } = $.ui.resolve(e)` was refused): h('Client', …) is its own form.
+function gridClient(e: ResolveInput, section: string, props: GridProps) {
   if (e.surface !== 'desktop') return undefined
-  const { Client } = $.ui.resolve(e)
-  return (
-    <Client
-      key={`grid-${section}`}
-      module="./sortgrid.tsx"
-      props={props}
-      width={gridCells(props.perRow)}
-      height={Math.max(1, Math.ceil(props.cards.length / props.perRow)) * GRID_PITCH_ROWS + 1}
-    />
-  )
+  // the string tag is the form the directory names (a Client bound from the table, with or without a cast, it refused twice)
+  return h('Client', {
+    key: `grid-${section}`,
+    module: './sortgrid.tsx',
+    props,
+    width: gridCells(props.perRow),
+    height: Math.max(1, Math.ceil(props.cards.length / props.perRow)) * GRID_PITCH_ROWS + 1,
+  })
 }
 
 // The panel of on/off buttons (the owner 2026-10-09), drawn with Box, Text and Button only, which every surface has, so phone
@@ -2468,7 +2466,7 @@ async function drawPanel($: EngineInterface, e: ResolveInput) {
     return (
       <Box key={`grid-${section}-part`} flexDirection="column">
         <Text dimColor>{tr('grid.hint')}</Text>
-        {gridClient($, e, section, { cards, nameMax: lang.rules.nameMax, words: gridWords, perRow })}
+        {gridClient(e, section, { cards, nameMax: lang.rules.nameMax, words: gridWords, perRow })}
         {movable.length === 0 && <Text dimColor>{tr('empty.grid')}</Text>}
       </Box>
     )

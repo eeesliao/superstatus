@@ -1,7 +1,6 @@
-// The mod's types and its $.state contract in one self-contained file (`claude plugin validate` holds the contract against
-// every $.state key register.tsx names and allows it no import; plugin.json's `types` points here). Since s45 the hooks
-// reach these types through ./index.d.ts, a type-only re-export: the plugin directory refused the `declare` below where a
-// hooks module's import led it (MOD_SOURCE_UNCERTAIN on the old types/index.d.ts line 56).
+// The $.state contract plugin.json names, self-contained as `claude plugin validate` demands, with the `declare` the plugin
+// directory refuses in any file an import reaches (s45, MOD_SOURCE_UNCERTAIN, twice); so nothing imports this file. The types
+// above the declare are the same text as ./index.d.ts, which the hooks import; tests/test_store_rules.py holds them equal.
 // Tool calls of this session's main loop counted so far; -1 until seeded from the stored conversation.
 export type ToolCount = number
 

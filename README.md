@@ -70,14 +70,14 @@ marketplace, then pick a scope (the first, your user, puts it in every session):
 
 In the desktop app, where `/plugin` does not run: click **+** next to the prompt box, then **Plugins**, **Add marketplace**
 with `eeesliao/superstatus`, then **Add plugin**. A plugin installed this way does not place the four profiles: download
-**superstatus-v0.8-profiles.zip** from Releases (any system; its README.txt says where they go), or use the Mac installer below.
+**superstatus-v0.85-profiles.zip** from Releases (any system; its README.txt says where they go), or use the Mac installer below.
 
 **On a Mac**, download the zip from Releases, unzip it and run the installer in Terminal. It asks before it changes
 anything. If you'd like to see what it plans to do first, add `--dry-run` and it won't touch a single file:
 
 ```sh
-sh ~/Downloads/superstatus-v0.8/install.sh --dry-run
-sh ~/Downloads/superstatus-v0.8/install.sh
+sh ~/Downloads/superstatus-v0.85/install.sh --dry-run
+sh ~/Downloads/superstatus-v0.85/install.sh
 ```
 
 The installer does three things: it puts the mod in `~/.claude/ccssm`; it adds two settings to

@@ -72,15 +72,15 @@ Claude Code のウィンドウの下半分を、あなただけの小さなダ�
 
 デスクトップアプリでは `/plugin` が使えません。プロンプト欄の横の **+** から **Plugins**、**Add marketplace** で
 `eeesliao/superstatus` を入れ、**Add plugin** を押してください。この方法では四つの Profile は置かれません。
-Releases から **superstatus-v0.8-profiles.zip** をダウンロードするか（どのシステムでも可。置き場所は中の README.txt に
+Releases から **superstatus-v0.85-profiles.zip** をダウンロードするか（どのシステムでも可。置き場所は中の README.txt に
 あります）、下の Mac 用インストーラーを使ってください。
 
 **Mac**：Releases から zip をダウンロードして展開し、ターミナルでインストーラーを実行します。何かを変える前に
 必ず確認します。先に何をするのか見たいときは `--dry-run` を付けてください。ファイルには一切触れません。
 
 ```sh
-sh ~/Downloads/superstatus-v0.8/install.sh --dry-run
-sh ~/Downloads/superstatus-v0.8/install.sh
+sh ~/Downloads/superstatus-v0.85/install.sh --dry-run
+sh ~/Downloads/superstatus-v0.85/install.sh
 ```
 
 インストーラーがすることは三つです。mod を `~/.claude/ccssm` に置く。`~/.claude/settings.json` に設定を二つ

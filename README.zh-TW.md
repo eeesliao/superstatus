@@ -66,15 +66,15 @@
 ```
 
 在桌面版裡 `/plugin` 不能用：按提示框旁邊的 **+**，選 **Plugins**、**Add marketplace**，填 `eeesliao/superstatus`，
-再按 **Add plugin**。用這個方法裝的不會放那四份 Profile：到 Releases 下載 **superstatus-v0.8-profiles.zip**（任何系統都能用，
+再按 **Add plugin**。用這個方法裝的不會放那四份 Profile：到 Releases 下載 **superstatus-v0.85-profiles.zip**（任何系統都能用，
 裡面的 README.txt 寫了要放哪裡），或用下面的 Mac 安裝程式。
 
 **Mac**：到 Releases 下載 zip、解壓縮，在終端機執行安裝程式。它動任何東西之前都會先問你；想先看看它打算做什麼，
 加上 `--dry-run` 就好，一個檔案都不會碰：
 
 ```sh
-sh ~/Downloads/superstatus-v0.8/install.sh --dry-run
-sh ~/Downloads/superstatus-v0.8/install.sh
+sh ~/Downloads/superstatus-v0.85/install.sh --dry-run
+sh ~/Downloads/superstatus-v0.85/install.sh
 ```
 
 安裝程式會做三件事：把 mod 放進 `~/.claude/ccssm`；在 `~/.claude/settings.json` 加兩個設定（會先幫你備份）；

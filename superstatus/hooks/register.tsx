@@ -8,6 +8,7 @@ import { BUILT_IN, checkLang, EN, translator } from './lang'
 import type { LangFile, Translate } from './lang'
 import { clockText, NO_POMO, pomoAfter, pomoLeft, pomoNext } from './pomo'
 import { localDay, zoneOffsetMs } from './zone'
+import type { Props as GridProps } from './sortgrid'
 // the four states a stored pomodoro may carry; anything else is settings from before it, or nonsense, and is dropped
 const POMO_STATES: readonly string[] = ['idle', 'run', 'pause', 'break']
 import type { Pomo, PomoVerb } from './pomo'
@@ -2133,6 +2134,23 @@ async function runOnHost($: EngineInterface, card: SlCard, command: string) {
   }
 }
 
+// The 編輯 grid's Client element (s36), drawn on the desktop alone: the one surface with a Client that was measured. Its own
+// function so that the plugin directory reads the element down to its fixed module (s45 review, MOD_IMPORT_DYNAMIC_COMPUTED:
+// a Client taken through a cast or a conditional is refused): the surface narrows e, and Client comes from $.ui.resolve plainly.
+function gridClient($: EngineInterface, e: ResolveInput, section: string, props: GridProps) {
+  if (e.surface !== 'desktop') return undefined
+  const { Client } = $.ui.resolve(e)
+  return (
+    <Client
+      key={`grid-${section}`}
+      module="./sortgrid.tsx"
+      props={props}
+      width={gridCells(props.perRow)}
+      height={Math.max(1, Math.ceil(props.cards.length / props.perRow)) * GRID_PITCH_ROWS + 1}
+    />
+  )
+}
+
 // The panel of on/off buttons (the owner 2026-10-09), drawn with Box, Text and Button only, which every surface has, so phone
 // and desktop share one drawing.
 async function drawPanel($: EngineInterface, e: ResolveInput) {
@@ -2142,10 +2160,8 @@ async function drawPanel($: EngineInterface, e: ResolveInput) {
   // the language list where the surface has a Select (the phone has none)
   const { Select } = $.ui.resolve(e) as { Select?: never }
   // the 編輯 grid (s36) where the surface draws a Client region and it was measured: the desktop; elsewhere the arrows as before
-  // no cast here: the plugin directory must read the Client element down to its fixed module (s45 review, MOD_IMPORT_DYNAMIC_COMPUTED)
-  const table = $.ui.resolve(e)
-  const Client = 'Client' in table ? table.Client : undefined
-  const isGrid = e.surface === 'desktop' && Client !== undefined
+  // the grid itself is gridClient()'s, where the Client element is written plainly for the plugin directory (s45 review)
+  const isGrid = e.surface === 'desktop'
   await read($, readCountState)
   await read($, languageState)
   const langNote = await read($, langNoteState)
@@ -2452,13 +2468,7 @@ async function drawPanel($: EngineInterface, e: ResolveInput) {
     return (
       <Box key={`grid-${section}-part`} flexDirection="column">
         <Text dimColor>{tr('grid.hint')}</Text>
-      <Client
-        key={`grid-${section}`}
-        module="./sortgrid.tsx"
-        props={{ cards, nameMax: lang.rules.nameMax, words: gridWords, perRow }}
-        width={gridCells(perRow)}
-        height={Math.max(1, Math.ceil(cards.length / perRow)) * GRID_PITCH_ROWS + 1}
-      />
+        {gridClient($, e, section, { cards, nameMax: lang.rules.nameMax, words: gridWords, perRow })}
         {movable.length === 0 && <Text dimColor>{tr('empty.grid')}</Text>}
       </Box>
     )

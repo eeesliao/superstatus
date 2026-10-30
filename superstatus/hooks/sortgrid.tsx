@@ -12,7 +12,7 @@ import type { ClientModule, ClientPointerEvent, ClientSurface } from 'claude-cod
 type Card = { key: string; name: string; place: number; isOn: boolean; canMove: boolean; canDelete: boolean; canRename: boolean; isFixed?: boolean }
 type Words = { delete: string; confirm: string; builtIn: string; nameLong: string; nameEmpty: string; fixed: string }
 // perRow: cards to a row, four (the panel's narrow width, Claude Design step 1 s37: two)
-type Props = { cards: Card[]; nameMax: number; words: Words; perRow?: number }
+export type Props = { cards: Card[]; nameMax: number; words: Words; perRow?: number }
 // pressed: the card the button went down on; over: the place it is held over; moved: it left its own place since the press; editing: the
 // card whose name is a field; asking: the card whose 刪除 reads 確定刪除; shown and basis: what the grid posted, kept while the panel
 // still hands the cards it had before (basis)

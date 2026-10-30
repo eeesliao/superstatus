@@ -285,14 +285,14 @@ const TOOL = (id: string) => ({ type: 'tool_use', id, name: 'Bash', input: {} })
 
 // the owner 2026-10-09 s29: by eE v0.1 went on the status line, then off it (「拿掉」) when the version became a button first in TouchBar
 // (「by eE v0.1 新增一個版本號的按鈕 放在第一個」); the mod's own text was also a different size from the engine's superstatus in front.
-test('the status line has no by eE v0.1 in front: the 版本號 card\'s version (v.0.8 since s45, the first public release, his v0.8 Beta; v.0.7.5 from s43; v.0.7 since s42, the touchbar paging seen on his desktop (the version rule of s40); v.0.6 from s40, Alex 「目前SS版本號應該要往前到0.6了」; v.0.3 from s35, 「好全小寫 superstatus@ccssm」), then the items', async ($, on) => {
+test('the status line has no by eE v0.1 in front: the 版本號 card\'s version (v.0.85 since the s45 store fixes, his 「版本修正成 v0.85」; v.0.8 from s45, the first public release, his v0.8 Beta; v.0.7.5 from s43; v.0.7 since s42, the touchbar paging seen on his desktop (the version rule of s40); v.0.6 from s40, Alex 「目前SS版本號應該要往前到0.6了」; v.0.3 from s35, 「好全小寫 superstatus@ccssm」), then the items', async ($, on) => {
   const w = world()
   w.store = { language: 'zh-TW' }
   engine(on, w)
   await start($)
 
   expect(w.status[w.status.length - 1]).not.toContain('by eE')
-  expect(w.status[w.status.length - 1]).toBe('v.0.8  Alex  進度 5  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
+  expect(w.status[w.status.length - 1]).toBe('v.0.85  Alex  進度 5  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
 })
 
 test('with every item off the status line is cleared', async ($, on) => {
@@ -312,7 +312,7 @@ test('with nothing stored, the line shows the operator name, 進度, 目前剩�
   await start($)
 
   // the owner 2026-10-09: the 5-hour quota reads 五小時 (it was 目前 for a while), the 7-day one 每週; context shows what is left before compaction
-  expect(last(w)).toBe('v.0.8  Alex  進度 5  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
+  expect(last(w)).toBe('v.0.85  Alex  進度 5  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
 })
 
 test('on load it shows every item with text symbols and runs only the three read-only git commands', async ($, on) => {
@@ -320,8 +320,8 @@ test('on load it shows every item with text symbols and runs only the three read
   engine(on, w)
   await start($)
 
-  // 版本號 (v.0.8) is first on the line since s29
-  expect(last(w)).toBe(`v.0.8  ${FULL}`)
+  // 版本號 (v.0.85) is first on the line since s29
+  expect(last(w)).toBe(`v.0.85  ${FULL}`)
   for (const argv of w.ran) {
     expect(ALL_GIT).toContain(argv.join(' '))
   }
@@ -389,7 +389,7 @@ test('/ss turns items off and on, git is a group, a note shows, icons off shows 
   expect(last(w)?.endsWith('✎ 今天先做 UPS')).toBe(true)
 
   await sl($, 'icons off')
-  expect(last(w)?.startsWith('v.0.8  Alex  進度 5  工具 3')).toBe(true)
+  expect(last(w)?.startsWith('v.0.85  Alex  進度 5  工具 3')).toBe(true)
   expect(last(w)).toContain('備註 今天先做 UPS')
 
   await sl($, 'on ctx')
@@ -799,7 +799,7 @@ test('every dial carries its value inside the disc; 快轉 has a full green arc,
   const ui = await $.ui.mount({ plugin: 'superstatus', surface: 'desktop', component: 'CommandOutput', props: PANEL })
   const dials = (await ui.findAll({ type: 'Svg' })).filter(d => d.props['width'] === 72)
   expect(dials.map(d => d.props['alt'])).toEqual([
-    '版本號 v.0.8', '操作者 Alex', '進度 5', '工具次數 3', '目前剩下 50%', '五小時 23%', '每週 8%', '分數 D', '待決議 2', '分支 分支路徑', '待存檔 2', '快轉 已快轉', '符號 用文字',
+    '版本號 v.0.85', '操作者 Alex', '進度 5', '工具次數 3', '目前剩下 50%', '五小時 23%', '每週 8%', '分數 D', '待決議 2', '分支 分支路徑', '待存檔 2', '快轉 已快轉', '符號 用文字',
   ])
   const source = (alt: string) => drawingOf(String(dials.find(d => d.props['alt'] === alt)?.props['source']))
   const COLOURED = /stroke="#(3fb950|d29922|f85149)"/
@@ -956,7 +956,7 @@ describe('sorting the cards', () => {
     await ui.press({ key: 'right-who' })
     // 版本號 stays first (s29)
     expect(await ORDER_OF(ui)).toEqual(['ver', 'block', 'who', 'tools', 'ctx', '5h', '7d', 'score', 'pending', 'branch', 'dirty', 'ff'])
-    expect(last(w)?.startsWith('v.0.8  進度 5  Alex')).toBe(true)
+    expect(last(w)?.startsWith('v.0.85  進度 5  Alex')).toBe(true)
     expect((w.store['settings'] as { order: string[] }).order.slice(0, 4)).toEqual(['ver', 'block', 'who', 'tools'])
 
     await ui.press({ key: 'left-ctx' })
@@ -989,11 +989,11 @@ describe('sorting the cards', () => {
     await ui.press({ key: 'right-who' })
     await ui.press({ key: 'toggle-ctx' })
     expect((await ui.find({ type: 'Button', key: 'default-order' }))?.props['dimColor']).toBe(false)
-    expect(last(w)?.startsWith('v.0.8  進度 5  Alex')).toBe(true)
+    expect(last(w)?.startsWith('v.0.85  進度 5  Alex')).toBe(true)
 
     await ui.press({ key: 'default-order' })
     expect(await ORDER_OF(ui)).toEqual(DEFAULT_ORDER)
-    expect(last(w)?.startsWith('v.0.8  Alex  進度 5')).toBe(true)
+    expect(last(w)?.startsWith('v.0.85  Alex  進度 5')).toBe(true)
     const stored = w.store['settings'] as { order: string[]; off: string[] }
     expect(stored.order).toEqual(DEFAULT_ORDER)
     expect(stored.off).toContain('ctx')
@@ -1078,7 +1078,7 @@ describe('sorting the cards', () => {
     await start($)
 
     // an order kept before s29 gets 版本號 first
-    expect(last(w)?.startsWith('v.0.8  ✓ 已快轉  Alex  進度 5')).toBe(true)
+    expect(last(w)?.startsWith('v.0.85  ✓ 已快轉  Alex  進度 5')).toBe(true)
     const ui = await $.ui.mount({ plugin: 'superstatus', surface: 'terminal', component: 'CommandOutput', props: PANEL })
     expect(await ORDER_OF(ui)).toEqual(['ver', 'ff', 'who', 'block', 'tools', 'ctx', '5h', '7d', 'score', 'pending', 'branch', 'dirty'])
   })
@@ -1309,7 +1309,7 @@ test('in a project without the journal and score files or git, those items do no
   engine(on, w)
   await start($)
 
-  expect(last(w)).toBe('v.0.8  ⌗ 3  ctx 剩 ?  5h ?  7d ?')
+  expect(last(w)).toBe('v.0.85  ⌗ 3  ctx 剩 ?  5h ?  7d ?')
 })
 
 test('only the items a project has appear: MEMORY.md without Score.md shows 進度 and 坑, no 分數', async ($, on) => {
@@ -1776,22 +1776,22 @@ describe('開關卡', () => {
 // none); the first press asks (確定刪除), the second removes the card from the panel, the status line and the store. Turning 排序
 // off takes the question back.
 // the owner 2026-10-09 s29 「版本號只要在 status line」 (go on the read-back): the version is a 13th Status Line card, 版本號, first; its dial and
-// the status line say v.0.8 (from the code); it turns on and off like any card and is the one card that cannot be deleted. The other
+// the status line say v.0.85 (from the code); it turns on and off like any card and is the one card that cannot be deleted. The other
 // twelve (符號 included) are deleted with 刪除 while sorting; 預設 brings all thirteen back in the default order.
 describe('the 版本號 card, and deleting the built-in cards', () => {
-  test('a 13th card, 版本號, first: its dial says v.0.8, its name button 版本號, lit; the status line starts with v.0.8', async ($, on) => {
+  test('a 13th card, 版本號, first: its dial says v.0.85, its name button 版本號, lit; the status line starts with v.0.85', async ($, on) => {
     const w = world()
     w.store = { language: 'zh-TW' }
     engine(on, w)
     await start($)
 
-    expect(last(w)).toBe('v.0.8  Alex  進度 5  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
+    expect(last(w)).toBe('v.0.85  Alex  進度 5  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
     const ui = await $.ui.mount({ plugin: 'superstatus', surface: 'desktop', component: 'CommandOutput', props: PANEL })
     const cards = walk([await ui.drawn()]).filter(el => el.type === 'Box' && String(el.props?.['key']).startsWith('card-'))
       .map(el => String(el.props['key']))
     expect(cards[0]).toBe('card-ver')
     expect(cards.length).toBe(13)
-    expect((await ui.findAll({ type: 'Svg' })).find(d => d.props['alt'] === '版本號 v.0.8')).toBeDefined()
+    expect((await ui.findAll({ type: 'Svg' })).find(d => d.props['alt'] === '版本號 v.0.85')).toBeDefined()
     const name = await ui.find({ type: 'Button', key: 'toggle-ver' })
     expect(bare(name?.text)).toBe('版本號')
     expect(name?.props['variant']).toBe('primary')
@@ -1868,7 +1868,7 @@ describe('the 版本號 card, and deleting the built-in cards', () => {
     expect(await ui.find({ type: 'Box', key: 'card-icons' })).toBeUndefined()
     // 版本號 cannot be deleted, an unknown name is dropped
     expect(await ui.find({ type: 'Box', key: 'card-ver' })).toBeDefined()
-    expect(last(w)?.startsWith('v.0.8  進度 5')).toBe(true)
+    expect(last(w)?.startsWith('v.0.85  進度 5')).toBe(true)
   })
 })
 
@@ -5135,7 +5135,7 @@ describe('profiles', () => {
 
     expect(w.written).toEqual([`${DIR}/工作.json`])
     const saved = JSON.parse(w.files[`${DIR}/工作.json`] ?? '{}') as { kind: string; format: number; name: string; savedAt: string; version: string; language: string; settings: { cards: unknown[]; order: string[]; off: string[] } }
-    expect([saved.kind, saved.format, saved.name, saved.savedAt, saved.version, saved.language]).toEqual(['superstatus-profile', 1, '工作', '2026-10-12T09:40:00.000Z', '0.8', 'zh-TW'])
+    expect([saved.kind, saved.format, saved.name, saved.savedAt, saved.version, saved.language]).toEqual(['superstatus-profile', 1, '工作', '2026-10-12T09:40:00.000Z', '0.85', 'zh-TW'])
     expect(saved.settings.cards).toEqual(MINE.cards)
     expect(saved.settings.order).toEqual(MINE.order)
     expect(saved.settings.off).toEqual([])
@@ -5533,7 +5533,7 @@ describe('編輯 on the desktop: the cards as a grid to drag', () => {
     await ui.press({ key: 'sort' })
     await ui.press({ key: 'grid-right-who' })
     expect((w.store['settings'] as { order: string[] }).order.slice(0, 3)).toEqual(['ver', 'block', 'who'])
-    expect(last(w)).toBe('v.0.8  進度 5  Alex  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
+    expect(last(w)).toBe('v.0.85  進度 5  Alex  目前剩下 50%  五小時 23%  每週 8%  ✓ 已快轉')
     expect((await gridTexts(ui)).filter(t => t !== '固定').slice(0, 3)).toEqual(['1 版本號', '2 進度', '3 操作者'])
   })
 

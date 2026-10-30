@@ -11,7 +11,7 @@ Type `/ss` to open the settings and arrange it at your own pace.
 Every number on screen comes from your own computer, your project folder and Claude Code itself. Nothing is sent
 anywhere.
 
-> **Beta.** It runs every day on three machines and has 559 automated tests, but it has not met many other setups
+> **Beta.** It runs every day on three machines and has 560 automated tests, but it has not met many other setups
 > yet. Mods are a new part of Claude Code, so the way they draw may change as Claude Code changes.
 
 ## Where you will see it

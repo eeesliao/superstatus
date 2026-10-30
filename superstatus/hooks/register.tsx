@@ -82,9 +82,9 @@ const NAME = 'superstatus'
 // The version (the owner 2026-10-09 s29 「v0.1 開始」; 2026-10-10 s30 「叫 v 0.2」; 2026-10-12 s35 v0.3, the first build installed on another
 // machine, 「好全小寫 superstatus@ccssm」 on the table; 2026-10-15 s40 0.6, 「目前SS版本號應該要往前到0.6了，從現在開始變動的版本號給你
 // 自動判定處理」; 2026-10-19 s42 0.7 by that rule, the touchbar pages seen on his desktop and his 「好，繼續」), plugin.json's 0.7.0;
-// 2026-10-27 s45 0.8, the first public release (his 「v0.8 Beta」, s44), plugin.json's 0.8.0: change the two together (the Mac installer's build refuses them apart). Shown as 「v.0.7」 by the 版本號 card (ver), first on the status line; it was by eE v0.1 in front of the line, then a button
+// 2026-10-30 s45 0.85, the store's fixes on 0.8 (his 「版本修正成 v0.85」); 0.8 was the first public release (his 「v0.8 Beta」, s44), plugin.json's 0.85.0: change the two together (the Mac installer's build refuses them apart). Shown as 「v.0.7」 by the 版本號 card (ver), first on the status line; it was by eE v0.1 in front of the line, then a button
 // in TouchBar, then 「版本號只要在 status line」.
-const VERSION = '0.8'
+const VERSION = '0.85'
 const VERSION_NAME = `v.${VERSION}`
 const toolCount = atom({ plugin: 'superstatus', key: 'toolCount' } as const, -1)
 // How many times the cards' and modules' values changed (s33): read by every drawing that shows them, so a new value redraws it.
@@ -1660,26 +1660,26 @@ function spread(n: number, x0: number, x1: number, gap: number): { x: number; w:
 }
 
 // one row of dashed boxes, each named for its card (the last says +N for the cards past it); a box with no card is drawn empty
-function boxesSvg(names: readonly string[], slots: number, y: number, h: number, fontSize: number, width = BAND_PICTURE_WIDTH): string {
+function boxesSvg(names: readonly string[], slots: number, y: number, rowH: number, fontSize: number, width = BAND_PICTURE_WIDTH): string {
   return spread(slots, 1, width - 1, 6)
     .map((b, i) => {
       const name = names[i]
       const more = i === slots - 1 && names.length > slots ? ` +${names.length - slots}` : ''
       return (
-        `<rect x="${b.x}" y="${y}" width="${b.w}" height="${h}" rx="5" fill="none" stroke="#808080" stroke-opacity="0.8" stroke-dasharray="4 3"/>` +
+        `<rect x="${b.x}" y="${y}" width="${b.w}" height="${rowH}" rx="5" fill="none" stroke="#808080" stroke-opacity="0.8" stroke-dasharray="4 3"/>` +
         (name === undefined
           ? ''
-          : `<text x="${b.x + b.w / 2}" y="${y + h / 2 + fontSize / 2 - 1}" text-anchor="middle" ${SVG_FONT} font-size="${fontSize}" fill="#f2f2f2">${escapeXml(name + more)}</text>`)
+          : `<text x="${b.x + b.w / 2}" y="${y + rowH / 2 + fontSize / 2 - 1}" text-anchor="middle" ${SVG_FONT} font-size="${fontSize}" fill="#f2f2f2">${escapeXml(name + more)}</text>`)
       )
     })
     .join('')
 }
 
 function tilesSvg(names: readonly string[], slots: number, isFolded: boolean): string {
-  const h = TILES_PICTURE_HEIGHT
+  const picH = TILES_PICTURE_HEIGHT
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${BAND_PICTURE_WIDTH}" height="${h}" viewBox="0 0 ${BAND_PICTURE_WIDTH} ${h}">` +
-    `<g${isFolded ? DIM : ''}>${boxesSvg(names, slots, 2, h - 4, 11)}</g></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${BAND_PICTURE_WIDTH}" height="${picH}" viewBox="0 0 ${BAND_PICTURE_WIDTH} ${picH}">` +
+    `<g${isFolded ? DIM : ''}>${boxesSvg(names, slots, 2, picH - 4, 11)}</g></svg>`
   )
 }
 
@@ -1690,9 +1690,9 @@ function bandPreview(blocks: readonly PreviewBlock[], buttons: readonly string[]
   const dim = (block: AboveBlock) => (off.includes(block) ? DIM : '')
   let y = 2
   const rows = blocks.map(({ size, names }) => {
-    const h = size.startsWith('H3') ? 40 : 18
-    const row = `<g${dim(BLOCK_OF[size])}>${boxesSvg(names, TILES[size].perRow, y, h, h === 40 ? 10 : 9)}</g>`
-    y += h + 4
+    const rowH = size.startsWith('H3') ? 40 : 18
+    const row = `<g${dim(BLOCK_OF[size])}>${boxesSvg(names, TILES[size].perRow, y, rowH, rowH === 40 ? 10 : 9)}</g>`
+    y += rowH + 4
     return row
   })
   const pills = buttons.length === 0 ? [] : spread(Math.min(buttons.length, BAND_SLOTS), 1, BAND_PICTURE_WIDTH - 1, 4)
@@ -1717,26 +1717,26 @@ function laidPreview(blocks: readonly PreviewBlock[], buttons: readonly string[]
   if (blocks.length === 0 && buttons === undefined) return undefined
   let y = 2
   const rows = blocks.map(({ size, names }) => {
-    const h = size.startsWith('H3') ? 40 : 18
-    const row = `<g class="row-${size}">${boxesSvg(names, TILES[size].perRow, y, h, h === 40 ? 10 : 9, width)}</g>`
-    y += h + 4
+    const rowH = size.startsWith('H3') ? 40 : 18
+    const row = `<g class="row-${size}">${boxesSvg(names, TILES[size].perRow, y, rowH, rowH === 40 ? 10 : 9, width)}</g>`
+    y += rowH + 4
     return row
   })
   if (buttons !== undefined) {
-    const h = isNarrow ? 16 : 18
+    const rowH = isNarrow ? 16 : 18
     const places = spread(BAND_SLOTS, 1, width - 1, isNarrow ? 3 : 6).map((p, i) => {
       const name = buttons[i]
       const colour = name !== undefined ? '#f2f2f2' : '#8a8a8a'
       const text = (label: string, size: number) => {
         const fit = textEm(label) * size > p.w - 4 ? ` textLength="${p.w - 4}" lengthAdjust="spacingAndGlyphs"` : ''
-        return `<text x="${p.x + p.w / 2}" y="${y + h / 2 + size * 0.36}" text-anchor="middle" ${SVG_FONT} font-size="${size}" fill="${colour}"${fit}>${escapeXml(label)}</text>`
+        return `<text x="${p.x + p.w / 2}" y="${y + rowH / 2 + size * 0.36}" text-anchor="middle" ${SVG_FONT} font-size="${size}" fill="${colour}"${fit}>${escapeXml(label)}</text>`
       }
       if (!isNarrow) return text(numbered(i + 1, name ?? ''), 9.5)
       const frame = name !== undefined ? 'stroke="#f2f2f2"' : 'stroke="#808080" stroke-opacity="0.8" stroke-dasharray="3 2"'
-      return `<rect x="${p.x}" y="${y}" width="${p.w}" height="${h}" rx="3" fill="none" ${frame}/>` + text(String(i + 1).padStart(2, '0'), 8)
+      return `<rect x="${p.x}" y="${y}" width="${p.w}" height="${rowH}" rx="3" fill="none" ${frame}/>` + text(String(i + 1).padStart(2, '0'), 8)
     })
     rows.push(`<g class="row-H1">${places.join('')}</g>`)
-    y += h + 4
+    y += rowH + 4
   }
   const height = y - 2
   return { source: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${rows.join('')}</svg>`, height }
@@ -1749,13 +1749,13 @@ const BLOCK_PICTURE_PX = 300
 const PICKED_STROKE = '#b1b9f9'
 function blockSvg(size: SlSize, names: readonly string[], picked: number | undefined): { source: string; alt: string } {
   const n = placesOf(size)
-  const h = TILES_PICTURE_HEIGHT
+  const picH = TILES_PICTURE_HEIGHT
   const isBoxes = size === 'H1'
   const inPlace = names.slice(0, n)
   const shapes = spread(n, 1, BLOCK_PICTURE_PX - 1, isBoxes ? 3 : 6).map((p, i) => {
     const name = inPlace[i]
     const label = isBoxes ? String(i + 1).padStart(2, '0') : (name ?? placeName(size, i + 1))
-    const boxH = isBoxes ? 16 : h - 4
+    const boxH = isBoxes ? 16 : picH - 4
     const frame =
       picked === i + 1
         ? `stroke="${PICKED_STROKE}" stroke-width="1.6"`
@@ -1765,13 +1765,13 @@ function blockSvg(size: SlSize, names: readonly string[], picked: number | undef
     const font = isBoxes ? 8 : 9.5
     const fit = textEm(label) * font > p.w - 4 ? ` textLength="${p.w - 4}" lengthAdjust="spacingAndGlyphs"` : ''
     return (
-      `<rect x="${p.x}" y="${(h - boxH) / 2}" width="${p.w}" height="${boxH}" rx="${isBoxes ? 3 : 5}" fill="none" ${frame}/>` +
-      `<text x="${p.x + p.w / 2}" y="${h / 2 + font * 0.36}" text-anchor="middle" ${SVG_FONT} font-size="${font}" fill="${name !== undefined ? '#f2f2f2' : '#8a8a8a'}"${fit}>${escapeXml(label)}</text>`
+      `<rect x="${p.x}" y="${(picH - boxH) / 2}" width="${p.w}" height="${boxH}" rx="${isBoxes ? 3 : 5}" fill="none" ${frame}/>` +
+      `<text x="${p.x + p.w / 2}" y="${picH / 2 + font * 0.36}" text-anchor="middle" ${SVG_FONT} font-size="${font}" fill="${name !== undefined ? '#f2f2f2' : '#8a8a8a'}"${fit}>${escapeXml(label)}</text>`
     )
   })
   const free = isBoxes ? [] : Array.from({ length: n - inPlace.length }, (_, i) => placeName(size, inPlace.length + i + 1))
   return {
-    source: `<svg xmlns="http://www.w3.org/2000/svg" width="${BLOCK_PICTURE_PX}" height="${h}" viewBox="0 0 ${BLOCK_PICTURE_PX} ${h}">${shapes.join('')}</svg>`,
+    source: `<svg xmlns="http://www.w3.org/2000/svg" width="${BLOCK_PICTURE_PX}" height="${picH}" viewBox="0 0 ${BLOCK_PICTURE_PX} ${picH}">${shapes.join('')}</svg>`,
     alt: [size, ...inPlace, ...free].join(' '),
   }
 }
@@ -2142,7 +2142,9 @@ async function drawPanel($: EngineInterface, e: ResolveInput) {
   // the language list where the surface has a Select (the phone has none)
   const { Select } = $.ui.resolve(e) as { Select?: never }
   // the 編輯 grid (s36) where the surface draws a Client region and it was measured: the desktop; elsewhere the arrows as before
-  const { Client } = $.ui.resolve(e) as { Client?: never }
+  // no cast here: the plugin directory must read the Client element down to its fixed module (s45 review, MOD_IMPORT_DYNAMIC_COMPUTED)
+  const table = $.ui.resolve(e)
+  const Client = 'Client' in table ? table.Client : undefined
   const isGrid = e.surface === 'desktop' && Client !== undefined
   await read($, readCountState)
   await read($, languageState)

@@ -3,6 +3,14 @@
   "version": "0.85.0",
   "description": "Your own dashboard in Claude Code: a status line with context left and quota used, and above the prompt charts, countdowns, a pomodoro and buttons. Type /ss to arrange it.",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/eeesliao/superstatus",
+  "repository": "https://github.com/eeesliao/superstatus",
+  "keywords": [
+    "status line",
+    "dashboard",
+    "pomodoro",
+    "mod"
+  ],
   "author": {
     "name": "eE"
   },

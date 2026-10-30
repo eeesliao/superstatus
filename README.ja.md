@@ -150,6 +150,38 @@ Claude が追加したこの種のカードと、見本に入っているもの�
 モジュールファイルが任意の JavaScript を実行することはありません。`examples/` に手直しして使える例が三つあり、
 Claude に頼めば手元のツールで書いてくれます。
 
+## あなたのコンピューター上でしていること
+
+mod を審査する人のための、コードから書き出した全リストです。
+
+**読むもの。** Claude Code から：context と使用量がどれだけ使われたか。開始時に一度だけ会話を読み、ツール呼び出しの回数を
+数えます（数えるだけで、文章は残しません）。プロジェクトのフォルダーから：ステータス行に使う最新の `.claude/journal_*.md`、
+ファイルカードが指すファイル（プロジェクトの中だけ）、`.claude/superstatus/modules/` のモジュールファイル。ホストから、
+グラフのために：`/proc/sys/kernel/hostname`、`osrelease`、`/proc/uptime`、`/proc/cpuinfo`、`/proc/loadavg`、`/proc/meminfo`、
+`/sys/class/thermal/thermal_zone0/temp`。
+
+**自分で実行するもの。** 固定の読み取り専用コマンドで、シェルは通さず、最大 3〜5 秒：`git rev-parse --abbrev-ref HEAD`、
+`git status --porcelain`、`git merge-base --is-ancestor`（HEAD と `main` または `master`）、`git log --since=15.days.ago
+--format=%cs`、`date +%F`、`df -P -k -l`、それに Profile フォルダーを探すための `printf` による `$HOME` と `$CLAUDE_CONFIG_DIR`。
+Profile パネルで **削除** を押したときは、その Profile ファイル一つを `rm -f`。あとは *あなた自身* がコマンドカード、`!` ボタン、
+モジュールの `reads` と `runs` に入れたものだけです（上を参照）。
+
+**書くもの。** 自分の設定を、Claude Code が plugin ごとに持つ保存領域へ。**Save** を押したときに Profile を
+`~/.claude/superstatus/profiles/`（または `$CLAUDE_CONFIG_DIR` の下）の `<名前>.json` として、読み込みの前に `before-load` を。
+Claude がモジュール追加のツールを使ったときに、`<プロジェクト>/.claude/superstatus/modules/` にモジュールファイルを一つ。
+それ以外はありません。
+
+**送るもの。** ありません。mod はネットワーク接続を一切開きません。コード内で唯一の URL `www.w3.org/2000/svg` は SVG 画像
+形式の名前です。
+
+**あなたの代わりに入力する、またはコマンドを実行するもの。** あなたが押したときだけ：スイッチカードはそのスラッシュコマンドを、
+ボタンはそのスラッシュコマンドまたはひとことを送り、モジュールのアクションも同じです。`/ss` の **Reload** は `/reload-plugins` を
+実行します。
+
+**フックするもの。** session の開始、保存される各メッセージ（ツール呼び出しを数えるため）、各ターンの終わり（更新のため）。
+ステータス行、プロンプトの上の帯、三つの `/ss` パネル、`/ss` の返事の描画。`/ss` コマンド。そして Claude に渡す四つのツール
+（`cards`、`add_card`、`change_card`、`add_module`）。これは自分のツールなので、自分で答えます。
+
 ## 既知の問題
 
 - **`/ss pomo start` を入力して送ると、まれに反応がありません。** Claude Code が「どの hook も答えなかった」と返し、

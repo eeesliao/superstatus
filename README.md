@@ -148,6 +148,36 @@ add your own, put a JSON file in `<project>/.claude/superstatus/modules/` saying
 numbers are in their output, and superstatus does the drawing. It is data, not code: a module file can never run
 arbitrary JavaScript. `examples/` has three you can adapt, or simply ask Claude to write one with the tool it has.
 
+## What it does on your computer
+
+For anyone reviewing the mod, here is the whole list, taken from the code.
+
+**Reads.** From Claude Code: how much context and quota is used, and — once, at start — how many tool calls the
+conversation already holds (it counts them; it keeps none of the text). From the project folder: the newest
+`.claude/journal_*.md` for the status line, any file a file card names (inside the project only), and the module
+files in `.claude/superstatus/modules/`. From the host, for the charts: `/proc/sys/kernel/hostname`, `osrelease`,
+`/proc/uptime`, `/proc/cpuinfo`, `/proc/loadavg`, `/proc/meminfo` and `/sys/class/thermal/thermal_zone0/temp`.
+
+**Runs, by itself.** Fixed read-only commands, no shell, 3–5 s at most: `git rev-parse --abbrev-ref HEAD`,
+`git status --porcelain`, `git merge-base --is-ancestor` (HEAD against `main` or `master`), `git log --since=15.days.ago
+--format=%cs`, `date +%F`, `df -P -k -l`, and `printf` of `$HOME` and `$CLAUDE_CONFIG_DIR` to find the profiles folder.
+`rm -f` of one profile file when you press **Delete** in the Profile pane. Plus whatever *you* put in a command card, a
+`!` button or a module's `reads` and `runs` lists (see above).
+
+**Writes.** Its settings, in the store Claude Code keeps for each plugin. Profiles as `<name>.json` in
+`~/.claude/superstatus/profiles/` (or under `$CLAUDE_CONFIG_DIR`) when you press **Save**, and `before-load` before a
+load. A module file in `<project>/.claude/superstatus/modules/` when Claude uses the add-module tool. Nothing else.
+
+**Sends.** Nothing. The mod opens no network connection; the one web address in its code, `www.w3.org/2000/svg`, is the
+name of the SVG picture format.
+
+**Types as you, or runs commands.** Only when you press something: a switch card sends its slash command, a button sends
+its slash command or its sentence, a module's action can do the same, and **Reload** in `/ss` runs `/reload-plugins`.
+
+**Hooks.** The session's start, each stored message (to count tool calls) and each turn's end (to refresh); drawing the
+status line, the band above the prompt, the three `/ss` panes and the `/ss` reply; the `/ss` command; and the four
+tools it gives Claude (`cards`, `add_card`, `change_card`, `add_module`), which it answers itself — they are its own.
+
 ## Known issues
 
 - **Typing `/ss pomo start` sometimes gets no answer.** Claude Code replies that no hook answered it, and the pomodoro does

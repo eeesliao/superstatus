@@ -140,6 +140,33 @@ Claude 幫你加的這類卡片，還有範本裡的，**一律先是關著的**
 它是資料、不是程式，模組檔永遠沒辦法執行任意的 JavaScript。`examples/` 裡有三個可以照著改，也可以直接請 Claude
 用它手上的工具幫你寫。
 
+## 它在你電腦上做的事
+
+給審查 mod 的人看的完整清單，照程式碼寫的。
+
+**讀。** 從 Claude Code：context 和額度用了多少；開始時讀一次對話，只數裡面有幾次工具呼叫（只數數，不留文字）。
+從專案資料夾：狀態列用的最新一份 `.claude/journal_*.md`、檔案卡指到的檔案（只能在專案裡面）、
+`.claude/superstatus/modules/` 裡的模組檔。從主機，給圖表用：`/proc/sys/kernel/hostname`、`osrelease`、`/proc/uptime`、
+`/proc/cpuinfo`、`/proc/loadavg`、`/proc/meminfo`、`/sys/class/thermal/thermal_zone0/temp`。
+
+**自己執行的。** 固定的唯讀指令，不經過 shell，最多 3–5 秒：`git rev-parse --abbrev-ref HEAD`、`git status --porcelain`、
+`git merge-base --is-ancestor`（HEAD 對 `main` 或 `master`）、`git log --since=15.days.ago --format=%cs`、`date +%F`、
+`df -P -k -l`，還有用 `printf` 印出 `$HOME` 和 `$CLAUDE_CONFIG_DIR` 來找 Profile 資料夾。在 Profile 面板按**刪除**時，
+`rm -f` 那一個 Profile 檔。另外就是*你自己*放進指令卡、`!` 按鈕或模組 `reads`、`runs` 清單裡的東西（見上面）。
+
+**寫。** 它的設定，放在 Claude Code 給每個 plugin 的儲存區。按**存檔**時把 Profile 寫成 `~/.claude/superstatus/profiles/`
+（或 `$CLAUDE_CONFIG_DIR` 底下）的 `<名稱>.json`，載入前先寫 `before-load`。Claude 用新增模組的工具時，在
+`<專案>/.claude/superstatus/modules/` 寫一個模組檔。沒有別的。
+
+**送出去。** 沒有。mod 不開任何網路連線；程式碼裡唯一的網址 `www.w3.org/2000/svg` 是 SVG 圖片格式的名字。
+
+**替你打字、或替你下指令。** 只在你按下去的時候：開關卡送它的斜線指令，按鈕送它的斜線指令或那句話，模組的動作也
+一樣，`/ss` 裡的**重新載入**會執行 `/reload-plugins`。
+
+**掛的 hook。** session 開始、每一則存下來的訊息（數工具呼叫）、每個回合結束（更新）；畫狀態列、提示框上方那一條、
+三個 `/ss` 面板和 `/ss` 的回覆；`/ss` 指令；還有它交給 Claude 的四個工具（`cards`、`add_card`、`change_card`、
+`add_module`），由它自己回答，因為那是它自己的工具。
+
 ## 已知問題
 
 - **打字送出 `/ss pomo start` 偶爾沒有反應。** Claude Code 會回一句沒有 hook 回答它，蕃茄鐘也不會開始。原因還在找；其他
